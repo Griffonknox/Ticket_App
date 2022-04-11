@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home Page</title>
+    <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>TEST TEST TEST</h1>
+<button onclick=test()>Get All</button>
+<div id="display"> some test text</div>
+
+<form id="form">
+<input type="text" name="name" required>
+<input type="text" name="email" required>
+</form>
+<script>
+
+function getAll1() {
+		
+	$.get("tickets", function(data) {
+
+		/* Action return with data, list of json files and needs to be JSON.stringify each list item */
+		
+/* 		for (var i = 0; i < data.length; i++ ) {
+			var para = document.createElement("P");
+			para.innerText = JSON.stringify(data[i]);
+		    $('#display').append(para);
+		}; */
+	
+	});
+};
+
+function getAll2() {
+	
+	$.getJSON( "tickets", function( data ) {
+		
+		//Do want you want with data which will be a list of json files	
+		
+	});
+	
+};
+	
+	
+	
+function postTicket1() {
+	
+	var firstName = $("#firstName").val();
+	var lastName = $("#lastName").val();
+	var email = $("#email").val();
+	var category = $("#category").val();
+	var urgency = $("#urgency").val();
+	var content = $("#content").val();
+
+	var sendJson = {
+
+	    "firstName" : firstName,
+	    "lastName" : lastName,
+		"email" : email,
+		"category" : category, 
+		"urgency" : urgency,
+		"content" : content
+	}
+
+
+	var url = "tickets";
+
+	$.ajax({
+		headers: {"Accept": 'application/json',
+		"content-type": "application/json"},
+		"type":"POST",
+		"url": url,
+		"data": JSON.stringify(sendJson),
+		"dataType": 'json',
+		"success": 
+			function(data){
+			//return data as data
+
+		}
+	});
+}
+
+
+function postTicket2() {
+	
+	var $form = $("#form");
+	var data = getFormData($form);
+	
+    $.ajax({
+        url: 'tickets', // url where to submit the request
+        type : "POST", // type of action POST || GET
+        dataType : 'json', // data type
+        data : data, // post data || get data
+        success : function(result) {
+            // you can see the result from the console
+            // tab of the developer tools
+            console.log(result);
+        },
+        error: function(xhr, resp, text) {
+            console.log(xhr, resp, text);
+        }
+    });
+		
+};
+
+
+
+function getFormData($form){
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
+
+function test() {
+	
+	var $form = $("#form");
+	var data = getFormData($form);
+	console.log(data);
+	
+};
+	
+	
+</script>
+</body>
+</html>
